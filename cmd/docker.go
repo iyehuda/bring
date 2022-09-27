@@ -4,6 +4,7 @@ Copyright © 2022 Yehuda Chikvashvili <yehudaac1@gmail.com>
 package cmd
 
 import (
+	"github.com/iyehuda/bring/cmd/docker"
 	"github.com/spf13/cobra"
 )
 
@@ -16,4 +17,5 @@ var dockerCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(dockerCmd)
+	dockerCmd.AddCommand(docker.DownloadCmd)
 }

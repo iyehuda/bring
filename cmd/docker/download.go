@@ -1,7 +1,7 @@
 /*
 Copyright © 2022 Yehuda Chikvashvili <yehudaac1@gmail.com>
 */
-package cmd
+package docker
 
 import (
 	"errors"
@@ -12,8 +12,8 @@ import (
 
 var downloadTarget string
 
-// downloadCmd represents the download command
-var downloadCmd = &cobra.Command{
+// DownloadCmd represents the download command
+var DownloadCmd = &cobra.Command{
 	Use:     "download <image> [other images...]",
 	Short:   "Download a set of docker images",
 	Long:    `This command depends on having docker installed and logged in to your registry (if necessary).`,
@@ -39,7 +39,5 @@ func dockerDownload(cmd *cobra.Command, args []string) error {
 }
 
 func init() {
-	dockerCmd.AddCommand(downloadCmd)
-
-	downloadCmd.Flags().StringVar(&downloadTarget, "to", "", "output file path")
+	DownloadCmd.Flags().StringVar(&downloadTarget, "to", "", "output file path")
 }
