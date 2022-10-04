@@ -24,11 +24,11 @@ var DownloadCmd = &cobra.Command{
 
 func validateArgs(cmd *cobra.Command, args []string) error {
 	if downloadTarget == "" {
-		return errors.New("Please specify a download target")
+		return errors.New("please specify a download target")
 	}
 
 	cmd.SilenceUsage = true
-	cmd.SilenceErrors = true
+
 	return nil
 }
 

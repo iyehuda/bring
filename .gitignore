@@ -16,3 +16,8 @@
 
 playground/
 bring
+
+*.tar
+*.tar.gz
+
+.vscode
