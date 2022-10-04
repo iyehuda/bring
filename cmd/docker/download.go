@@ -7,7 +7,7 @@ import (
 	"errors"
 
 	"github.com/iyehuda/bring/pkg/docker"
-	"github.com/iyehuda/bring/pkg/utils"
+	"github.com/iyehuda/bring/pkg/utils/commands"
 	"github.com/spf13/cobra"
 )
 
@@ -34,7 +34,7 @@ func validateArgs(cmd *cobra.Command, args []string) error {
 }
 
 func dockerDownload(cmd *cobra.Command, args []string) error {
-	docker := docker.NewFetcher(args, downloadTarget, &utils.LocalCommandRunner{})
+	docker := docker.NewFetcher(args, downloadTarget, &commands.LocalRunner{})
 
 	return docker.Fetch()
 }

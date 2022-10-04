@@ -8,18 +8,18 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/iyehuda/bring/pkg/utils"
+	"github.com/iyehuda/bring/pkg/utils/commands"
 )
 
 // Fetcher enables to fetch docker images from registry and save them locally
 type Fetcher struct {
 	images      []string
 	destination string
-	runner      utils.CommandRunner
+	runner      commands.Runner
 }
 
 // NewFetcher creates new instance of Fetcher with image list and destination file path
-func NewFetcher(images []string, destination string, runner utils.CommandRunner) *Fetcher {
+func NewFetcher(images []string, destination string, runner commands.Runner) *Fetcher {
 	return &Fetcher{
 		images:      images,
 		destination: destination,
