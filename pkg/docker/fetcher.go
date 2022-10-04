@@ -9,11 +9,13 @@ import (
 	"os/exec"
 )
 
+// Fetcher enables to fetch docker images from registry and save them locally
 type Fetcher struct {
 	images      []string
 	destination string
 }
 
+// NewFetcher creates new instance of Fetcher with image list and destination file path
 func NewFetcher(images []string, destination string) *Fetcher {
 	return &Fetcher{
 		images:      images,
@@ -21,6 +23,7 @@ func NewFetcher(images []string, destination string) *Fetcher {
 	}
 }
 
+// Fetch fetches images from registry and saves them locally
 func (df *Fetcher) Fetch() error {
 	if err := df.pull(); err != nil {
 		return fmt.Errorf("failed to fetch images: %w", err)
