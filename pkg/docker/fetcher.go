@@ -7,19 +7,23 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/iyehuda/bring/pkg/utils"
 )
 
 // Fetcher enables to fetch docker images from registry and save them locally
 type Fetcher struct {
 	images      []string
 	destination string
+	runner      utils.CommandRunner
 }
 
 // NewFetcher creates new instance of Fetcher with image list and destination file path
-func NewFetcher(images []string, destination string) *Fetcher {
+func NewFetcher(images []string, destination string, runner utils.CommandRunner) *Fetcher {
 	return &Fetcher{
 		images:      images,
 		destination: destination,
+		runner:      runner,
 	}
 }
 
@@ -47,7 +51,7 @@ func buildPullCommand(image string) *exec.Cmd {
 func (df *Fetcher) pull() error {
 	for _, image := range df.images {
 		cmd := buildPullCommand(image)
-		err := cmd.Run()
+		err := df.runner.Run(cmd)
 		if err != nil {
 			return &ImagePullError{
 				Image: image,
@@ -71,7 +75,7 @@ func buildSaveCommand(destination string, images []string) *exec.Cmd {
 func (df *Fetcher) save() error {
 	cmd := buildSaveCommand(df.destination, df.images)
 
-	if err := cmd.Run(); err != nil {
+	if err := df.runner.Run(cmd); err != nil {
 		return &ImageSaveError{
 			Destination: df.destination,
 			Images:      df.images,
