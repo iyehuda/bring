@@ -21,3 +21,4 @@ bring
 *.tar.gz
 
 .vscode
+coverage.txt
