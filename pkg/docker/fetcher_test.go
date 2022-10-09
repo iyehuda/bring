@@ -40,7 +40,7 @@ func TestFetcher_Fetch(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "Pull failed - image not found",
+			name: "Should fail - image not found",
 			fields: fields{
 				images:      []string{"alpine:not-exists"},
 				destination: "/tmp/test",
@@ -49,7 +49,7 @@ func TestFetcher_Fetch(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "Save failed - path not found",
+			name: "Should fail - path not found",
 			fields: fields{
 				images:      []string{"alpine:3.16"},
 				destination: "/foo/bar",
