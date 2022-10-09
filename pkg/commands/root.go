@@ -1,21 +1,6 @@
 package commands
 
-import (
-	"io"
-	"os"
-
-	"github.com/spf13/cobra"
-)
-
-var (
-	outputWriter io.Writer = os.Stdout
-)
-
-// SetOutput overrides the default output stream
-// It may be useful for testing or embedding in other packages
-func SetOutput(out io.Writer) {
-	outputWriter = out
-}
+import "github.com/spf13/cobra"
 
 // NewRootCommand creates a new root command for bring CLI
 func NewRootCommand() *cobra.Command {
@@ -24,10 +9,5 @@ func NewRootCommand() *cobra.Command {
 		Short: "Fetch assets for offline usage",
 		Long: `bring is a CLI that enables you to download assets from online sources such as docker images, helm charts, etc.
 Use this application to fetch every artifact necessary for your later offline amusement.`,
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			cmd.SetOut(outputWriter)
-
-			return nil
-		},
 	}
 }
