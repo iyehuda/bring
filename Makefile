@@ -6,6 +6,7 @@ ENTRYPOINT := ./cmd/bring
 BUILD_OUTPUT := bring
 COVERAGE_FILE := coverage.txt
 CLEANUP_FILES := $(BUILD_OUTPUT) $(COVERAGE_FILE)
+TEST_PARALLEL := 10
 
 .PHONY: setup
 setup:
@@ -20,8 +21,12 @@ build:
 	$(GO) build -o $(BUILD_OUTPUT) $(LDFLAGS) $(ENTRYPOINT)
 
 .PHONY: test
-test: $(TEST_MODULES)
+test:
 	go test -v -short -coverprofile=$(COVERAGE_FILE) -covermode=atomic ./...
+
+.PHONY: integration-tests
+integration-tests:
+	go test -v -cover -coverprofile=$(COVERAGE_FILE) -covermode=atomic -parallel $(TEST_PARALLEL) -tags=integration ./integration/...
 
 .PHONY: install
 install:

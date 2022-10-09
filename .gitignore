@@ -21,4 +21,4 @@ playground/
 *.tar.gz
 
 .vscode
-coverage.txt
+coverage.*
