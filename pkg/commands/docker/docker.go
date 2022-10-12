@@ -2,7 +2,7 @@ package docker
 
 import "github.com/spf13/cobra"
 
-// NewCommand creates new docker command for managing docker images
+// NewCommand creates new docker command for managing docker images.
 func NewCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "docker",

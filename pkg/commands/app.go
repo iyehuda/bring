@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// NewApp creates new bring CLI cobra command
+// NewApp creates new bring CLI cobra command.
 func NewApp() *cobra.Command {
 	rootCmd := NewRootCommand()
 

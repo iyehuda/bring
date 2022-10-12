@@ -2,7 +2,7 @@ package commands
 
 import "github.com/spf13/cobra"
 
-// NewRootCommand creates a new root command for bring CLI
+// NewRootCommand creates a new root command for bring CLI.
 func NewRootCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "bring",
