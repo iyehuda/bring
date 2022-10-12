@@ -1,0 +1,69 @@
+linters:
+  disable-all: true
+  enable:
+  - bodyclose
+  - containedctx
+  - contextcheck
+  - cyclop
+  - decorder
+  - dupl
+  - dupword
+  - durationcheck
+  - errcheck
+  - errchkjson
+  - errname
+  - errorlint
+  - exhaustive
+  - exportloopref
+  - forcetypeassert
+  - funlen
+  - gci
+  - gochecknoglobals
+  - gochecknoinits
+  - gocognit
+  - goconst
+  - gocritic
+  - gocyclo
+  - godot
+  - godox
+  - goerr113
+  - gofmt
+  - gofumpt
+  - goimports
+  - gomnd
+  - goprintffuncname
+  - gosec
+  - gosimple
+  - govet
+  - ineffassign
+  - interfacebloat
+  - ireturn
+  - loggercheck
+  - misspell
+  - nlreturn
+  - paralleltest
+  - prealloc
+  - predeclared
+  - reassign
+  - revive
+  - staticcheck
+  - typecheck
+  - unconvert
+  - unused
+  - usestdlibvars
+  - wrapcheck
+  - wsl
+
+linters-settings:
+  local-prefixes: github.com/iyehuda
+
+run:
+  build-tags:
+  - integration
+
+issues:
+  exclude-rules:
+  - path: _test\.go|^integration|tests
+    linters:
+    - funlen
+    - wrapcheck
