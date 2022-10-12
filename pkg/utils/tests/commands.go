@@ -4,7 +4,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/iyehuda/bring/pkg/utils/commands"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -14,6 +13,7 @@ type MockCommandRunner struct {
 
 func (r *MockCommandRunner) Run(cmd *exec.Cmd) error {
 	args := r.Called(cmd)
+
 	return args.Error(0)
 }
 
@@ -26,15 +26,12 @@ func CommandIncludes(str string) CommandPredicate {
 }
 
 // FakeCommandRunner enables unit testing modules that run commands with
-// a predictable error
+// a predictable error.
 type FakeCommandRunner struct {
 	Err error
 }
 
-// Run runs a command with a predefined error
+// Run runs a command with a predefined error.
 func (r *FakeCommandRunner) Run(cmd *exec.Cmd) error {
 	return r.Err
 }
-
-// NoOpCommandRunner is a command runner that does nothing
-var NoOpCommandRunner commands.Runner = &FakeCommandRunner{Err: nil}

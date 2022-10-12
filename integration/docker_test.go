@@ -18,6 +18,8 @@ func buildDownloadArgs(images []string, path string) []string {
 }
 
 func TestDockerDownload(t *testing.T) {
+	t.Parallel()
+
 	type fields struct {
 		images []string
 		path   string
@@ -68,6 +70,7 @@ func TestDockerDownload(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			output := &bytes.Buffer{}

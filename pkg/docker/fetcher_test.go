@@ -9,6 +9,8 @@ import (
 )
 
 func TestFetcher_Fetch(t *testing.T) {
+	t.Parallel()
+
 	type fields struct {
 		images      []string
 		destination string
@@ -25,6 +27,8 @@ func TestFetcher_Fetch(t *testing.T) {
 	failOnSave.On("Run", mock.MatchedBy(tests.CommandIncludes("docker save"))).
 		Return(&ImageSaveError{Images: []string{"alpine:3.16"}, Destination: "/foo/bar", Err: nil})
 
+	noOpCommandRunner := &tests.FakeCommandRunner{}
+
 	tests := []struct {
 		name    string
 		fields  fields
@@ -35,7 +39,7 @@ func TestFetcher_Fetch(t *testing.T) {
 			fields: fields{
 				images:      []string{"alpine:3.16"},
 				destination: "/tmp/test",
-				runner:      tests.NoOpCommandRunner,
+				runner:      noOpCommandRunner,
 			},
 			wantErr: false,
 		},
@@ -60,7 +64,9 @@ func TestFetcher_Fetch(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			df := &Fetcher{
 				images:      tt.fields.images,
 				destination: tt.fields.destination,
