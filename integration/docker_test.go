@@ -17,6 +17,20 @@ func buildDownloadArgs(images []string, path string) []string {
 	return args
 }
 
+func buildUploadArgs(path string, destination string) []string {
+	args := []string{"docker", "upload"}
+
+	if path != "" {
+		args = append(args, path)
+	}
+
+	if destination != "" {
+		args = append(args, "--to", destination)
+	}
+
+	return args
+}
+
 func TestDockerDownload(t *testing.T) {
 	t.Parallel()
 
@@ -82,7 +96,101 @@ func TestDockerDownload(t *testing.T) {
 			)
 
 			assertErrorIf(t, err, tt.wantErr)
-			assertErrorPrintedIf(t, output, tt.wantHelpMessage)
+			assertUsagePrintedIf(t, output, tt.wantHelpMessage)
+		})
+	}
+}
+
+func TestDockerUpload(t *testing.T) {
+	t.Parallel()
+
+	type fields struct {
+		path        string
+		destination string
+	}
+
+	tests := []struct {
+		name            string
+		fields          fields
+		wantErr         bool
+		wantHelpMessage bool
+	}{
+		{
+			name:            "Should succeed - single image bundle",
+			fields:          fields{path: "/tmp/single.tar", destination: "yehudac.jfrog.io/example"},
+			wantErr:         false,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should succeed - multiple images",
+			fields:          fields{path: "/tmp/multiple.tar", destination: "yehudac.jfrog.io/example"},
+			wantErr:         false,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should succeed - single image, target subpath",
+			fields:          fields{path: "/tmp/single.tar", destination: "yehudac.jfrog.io/example/subpath"},
+			wantErr:         false,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should succeed - multiple images, target subpath",
+			fields:          fields{path: "/tmp/multiple.tar", destination: "yehudac.jfrog.io/example/subpath"},
+			wantErr:         false,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should fail - no input file path given",
+			fields:          fields{destination: "yehudac.jfrog.io/example"},
+			wantErr:         true,
+			wantHelpMessage: true,
+		},
+		{
+			name:            "Should fail - no target given",
+			fields:          fields{path: "/tmp/single.tar"},
+			wantErr:         true,
+			wantHelpMessage: true,
+		},
+		{
+			name:            "Should fail - invalid input file",
+			fields:          fields{path: "/tmp/invalid.tar", destination: "yehudac.jfrog.io/example"},
+			wantErr:         true,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should fail - input file not found",
+			fields:          fields{path: "/tmp/not/exists/bundle.tar", destination: "yehudac.jfrog.io/example"},
+			wantErr:         true,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should fail - registry not found",
+			fields:          fields{path: "/tmp/single.tar", destination: "somenonexistentregistry.io/iyehuda"},
+			wantErr:         true,
+			wantHelpMessage: false,
+		},
+		{
+			name:            "Should fail - registry path not found",
+			fields:          fields{path: "/tmp/single.tar", destination: "yehudac.jfrog.io/restricted"},
+			wantErr:         true,
+			wantHelpMessage: false,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			output := &bytes.Buffer{}
+
+			err := execute(
+				buildUploadArgs(tt.fields.path, tt.fields.destination),
+				withOutput(output),
+				withError(output),
+			)
+
+			assertErrorIf(t, err, tt.wantErr)
+			assertUsagePrintedIf(t, output, tt.wantHelpMessage)
 		})
 	}
 }

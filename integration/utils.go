@@ -72,6 +72,6 @@ func assertContainsIf(t *testing.T, buf *bytes.Buffer, substr string, condition 
 	}
 }
 
-func assertErrorPrintedIf(t *testing.T, buf *bytes.Buffer, condition bool) {
+func assertUsagePrintedIf(t *testing.T, buf *bytes.Buffer, condition bool) {
 	assertContainsIf(t, buf, helpMessage, condition)
 }

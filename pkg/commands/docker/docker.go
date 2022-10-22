@@ -12,6 +12,7 @@ func NewCommand() *cobra.Command {
 
 	command.AddCommand(
 		NewDownloadCommand(),
+		NewUploadCommand(),
 	)
 
 	return command
