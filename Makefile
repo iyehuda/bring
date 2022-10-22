@@ -26,7 +26,7 @@ endif
 
 .PHONY: lint
 lint:
-	golangci-lint run
+	$(LINT) run
 
 .PHONY: build
 build:
