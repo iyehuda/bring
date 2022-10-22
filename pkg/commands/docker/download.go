@@ -46,9 +46,9 @@ func validateDownloadArgs(opts *downloadOptions) func(cmd *cobra.Command, args [
 
 func downloadImages(opts *downloadOptions) func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) error {
-		docker := docker.NewFetcher(args, opts.downloadTarget, &commands.LocalRunner{})
+		fetcher := docker.NewFetcher(args, opts.downloadTarget, &commands.LocalRunner{})
 
-		if err := docker.Fetch(); err != nil {
+		if err := fetcher.Fetch(); err != nil {
 			return fmt.Errorf("failed to download images: %w", err)
 		}
 
