@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/iyehuda/bring/pkg/docker"
-	"github.com/iyehuda/bring/pkg/utils/commands"
+	"github.com/iyehuda/bring/pkg/executils"
 	"github.com/spf13/cobra"
 )
 
@@ -46,7 +46,7 @@ func validateDownloadArgs(opts *downloadOptions) func(cmd *cobra.Command, args [
 
 func downloadImages(opts *downloadOptions) func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) error {
-		fetcher := docker.NewFetcher(args, opts.downloadTarget, &commands.LocalRunner{})
+		fetcher := docker.NewFetcher(args, opts.downloadTarget, &executils.LocalRunner{})
 
 		if err := fetcher.Fetch(); err != nil {
 			return fmt.Errorf("failed to download images: %w", err)
