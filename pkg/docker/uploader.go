@@ -10,15 +10,18 @@ import (
 	"github.com/iyehuda/bring/pkg/utils/commands"
 )
 
+// ImageRetagger is an interface that is able to get an image name and return a modified version of it.
 type ImageRetagger interface {
 	Retag(string) string
 }
 
+// ImageUploader is able to load an image bundle, retag its contents and upload it to a specified registry target.
 type ImageUploader struct {
 	retagger ImageRetagger
 	runner   commands.Runner
 }
 
+// NewImageUploader creates a new ImageUploader with a retagger and command runner.
 func NewImageUploader(retagger ImageRetagger, runner commands.Runner) *ImageUploader {
 	return &ImageUploader{retagger: retagger, runner: runner}
 }
@@ -64,6 +67,8 @@ func (iu *ImageUploader) pushImage(image string) error {
 	return nil
 }
 
+// UploadImages takes an image bundle path, loads its images, retag them using the uploader retagger
+// and uploads them to the uploader destination.
 func (iu *ImageUploader) UploadImages(bundlePath string) ([]string, error) {
 	sourceImages, err := iu.loadImageBundle(bundlePath)
 	if err != nil {
