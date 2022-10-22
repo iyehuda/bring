@@ -8,7 +8,7 @@ LINT_NOT_INSTALLED_MESSAGE := "$(LINT) is not installed ❌\nPlease visit https:
 ENTRYPOINT := ./cmd/bring
 BUILD_OUTPUT := bring
 COVERAGE_FILE := coverage.txt
-CLEANUP_FILES := $(BUILD_OUTPUT) $(COVERAGE_FILE)
+CLEANUP_FILES := $(BUILD_OUTPUT) $(COVERAGE_FILE) ./integration/testdata/images/*
 TEST_PARALLEL := 10
 
 .PHONY: all
@@ -38,6 +38,7 @@ test:
 
 .PHONY: integration-tests
 integration-tests:
+	./scripts/download-images.sh
 	$(GO) test -v -parallel $(TEST_PARALLEL) -tags=integration ./integration/...
 
 .PHONY: install
