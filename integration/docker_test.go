@@ -7,6 +7,13 @@ import (
 	"testing"
 )
 
+const (
+	singleImageBundle      = "testdata/images/single.tar"
+	multipleImageBundle    = "testdata/images/multiple.tar"
+	invalidImageBundle     = "testdata/images/invalid.tar"
+	nonexistentImageBundle = "testdata/images/nonexistent.tar"
+)
+
 func buildDownloadArgs(images []string, path string) []string {
 	args := append([]string{"docker", "download"}, images...)
 
@@ -47,13 +54,13 @@ func TestDockerDownload(t *testing.T) {
 	}{
 		{
 			name:            "Should succeed - single image",
-			fields:          fields{images: []string{"alpine:3.16.2"}, path: "/tmp/single.tar"},
+			fields:          fields{images: []string{"alpine:3.16.2"}, path: singleImageBundle},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - multiple images",
-			fields:          fields{images: []string{"alpine:3.16.2", "redis:7.0.5-alpine"}, path: "/tmp/multiple.tar"},
+			fields:          fields{images: []string{"alpine:3.16.2", "redis:7.0.5-alpine"}, path: multipleImageBundle},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
@@ -117,25 +124,25 @@ func TestDockerUpload(t *testing.T) {
 	}{
 		{
 			name:            "Should succeed - single image bundle",
-			fields:          fields{path: "/tmp/single.tar", destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: singleImageBundle, destination: "yehudac.jfrog.io/example"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - multiple images",
-			fields:          fields{path: "/tmp/multiple.tar", destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: multipleImageBundle, destination: "yehudac.jfrog.io/example"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - single image, target subpath",
-			fields:          fields{path: "/tmp/single.tar", destination: "yehudac.jfrog.io/example/subpath"},
+			fields:          fields{path: singleImageBundle, destination: "yehudac.jfrog.io/example/subpath"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - multiple images, target subpath",
-			fields:          fields{path: "/tmp/multiple.tar", destination: "yehudac.jfrog.io/example/subpath"},
+			fields:          fields{path: multipleImageBundle, destination: "yehudac.jfrog.io/example/subpath"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
@@ -147,31 +154,31 @@ func TestDockerUpload(t *testing.T) {
 		},
 		{
 			name:            "Should fail - no target given",
-			fields:          fields{path: "/tmp/single.tar"},
+			fields:          fields{path: singleImageBundle},
 			wantErr:         true,
 			wantHelpMessage: true,
 		},
 		{
 			name:            "Should fail - invalid input file",
-			fields:          fields{path: "/tmp/invalid.tar", destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: invalidImageBundle, destination: "yehudac.jfrog.io/example"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should fail - input file not found",
-			fields:          fields{path: "/tmp/not/exists/bundle.tar", destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: nonexistentImageBundle, destination: "yehudac.jfrog.io/example"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should fail - registry not found",
-			fields:          fields{path: "/tmp/single.tar", destination: "somenonexistentregistry.io/iyehuda"},
+			fields:          fields{path: singleImageBundle, destination: "somenonexistentregistry.io/iyehuda"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should fail - registry path not found",
-			fields:          fields{path: "/tmp/single.tar", destination: "yehudac.jfrog.io/restricted"},
+			fields:          fields{path: singleImageBundle, destination: "yehudac.jfrog.io/restricted"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
