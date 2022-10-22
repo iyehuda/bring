@@ -54,6 +54,13 @@ jobs:
           go-version: 1.19
           cache: true
 
+      - name: Login to docker registry (yehudac.jfrog.io)
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: yehudac.jfrog.io
+          username: ${{ secrets.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_PASSWORD }}
+
       - name: Run unit tests
         run: make test
 
