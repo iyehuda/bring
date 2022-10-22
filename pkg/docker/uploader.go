@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/iyehuda/bring/pkg/utils/commands"
+	"github.com/iyehuda/bring/pkg/executils"
 )
 
 // ImageRetagger is an interface that is able to get an image name and return a modified version of it.
@@ -18,11 +18,11 @@ type ImageRetagger interface {
 // ImageUploader is able to load an image bundle, retag its contents and upload it to a specified registry target.
 type ImageUploader struct {
 	retagger ImageRetagger
-	runner   commands.Runner
+	runner   executils.Runner
 }
 
 // NewImageUploader creates a new ImageUploader with a retagger and command runner.
-func NewImageUploader(retagger ImageRetagger, runner commands.Runner) *ImageUploader {
+func NewImageUploader(retagger ImageRetagger, runner executils.Runner) *ImageUploader {
 	return &ImageUploader{retagger: retagger, runner: runner}
 }
 

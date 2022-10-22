@@ -3,8 +3,8 @@ package docker
 import (
 	"testing"
 
-	"github.com/iyehuda/bring/pkg/utils/commands"
-	"github.com/iyehuda/bring/pkg/utils/tests"
+	"github.com/iyehuda/bring/pkg/executils"
+	"github.com/iyehuda/bring/pkg/testutils"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -14,20 +14,20 @@ func TestFetcher_Fetch(t *testing.T) {
 	type fields struct {
 		images      []string
 		destination string
-		runner      commands.Runner
+		runner      executils.Runner
 	}
 
-	failOnPull := new(tests.MockCommandRunner)
-	failOnPull.On("Run", mock.MatchedBy(tests.CommandIncludes("docker pull"))).
+	failOnPull := new(testutils.MockCommandRunner)
+	failOnPull.On("Run", mock.MatchedBy(testutils.CommandIncludes("docker pull"))).
 		Return(&ImagePullError{Image: "alpine:not-exists", Err: nil})
 
-	failOnSave := new(tests.MockCommandRunner)
-	failOnSave.On("Run", mock.MatchedBy(tests.CommandIncludes("docker pull"))).
+	failOnSave := new(testutils.MockCommandRunner)
+	failOnSave.On("Run", mock.MatchedBy(testutils.CommandIncludes("docker pull"))).
 		Return(nil)
-	failOnSave.On("Run", mock.MatchedBy(tests.CommandIncludes("docker save"))).
+	failOnSave.On("Run", mock.MatchedBy(testutils.CommandIncludes("docker save"))).
 		Return(&ImageSaveError{Images: []string{"alpine:3.16"}, Destination: "/foo/bar", Err: nil})
 
-	noOpCommandRunner := &tests.FakeCommandRunner{}
+	noOpCommandRunner := &testutils.FakeCommandRunner{}
 
 	tests := []struct {
 		name    string

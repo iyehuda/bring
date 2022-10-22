@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/iyehuda/bring/pkg/docker"
-	"github.com/iyehuda/bring/pkg/utils/commands"
+	"github.com/iyehuda/bring/pkg/executils"
 	"github.com/spf13/cobra"
 )
 
@@ -49,7 +49,7 @@ func validateUploadArgs(opts *uploadOptions) func(cmd *cobra.Command, args []str
 func uploadImages(opts *uploadOptions) func(cmd *cobra.Command, args []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		retagger := docker.NewPreservePathImageRetagger(opts.uploadTarget)
-		uploader := docker.NewImageUploader(retagger, &commands.LocalRunner{})
+		uploader := docker.NewImageUploader(retagger, &executils.LocalRunner{})
 
 		images, err := uploader.UploadImages(args[0])
 		if err != nil {

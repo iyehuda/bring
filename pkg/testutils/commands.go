@@ -1,4 +1,4 @@
-package tests
+package testutils
 
 import (
 	"os/exec"
@@ -14,7 +14,7 @@ type MockCommandRunner struct {
 func (r *MockCommandRunner) Run(cmd *exec.Cmd) error {
 	args := r.Called(cmd)
 
-	return args.Error(0)
+	return args.Error(0) //nolint:wrapcheck
 }
 
 type CommandPredicate func(cmd *exec.Cmd) bool

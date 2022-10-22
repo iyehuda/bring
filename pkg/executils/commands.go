@@ -1,4 +1,4 @@
-package commands
+package executils
 
 import "os/exec"
 
