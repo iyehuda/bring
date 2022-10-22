@@ -4,6 +4,7 @@ package integration
 
 import (
 	"bytes"
+	"path"
 	"testing"
 )
 
@@ -46,6 +47,8 @@ func TestDockerDownload(t *testing.T) {
 		path   string
 	}
 
+	tempDir := t.TempDir()
+
 	tests := []struct {
 		name            string
 		fields          fields
@@ -54,13 +57,13 @@ func TestDockerDownload(t *testing.T) {
 	}{
 		{
 			name:            "Should succeed - single image",
-			fields:          fields{images: []string{"alpine:3.16.2"}, path: singleImageBundle},
+			fields:          fields{images: []string{"busybox:1.35.0"}, path: path.Join(tempDir, "single.tar")},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - multiple images",
-			fields:          fields{images: []string{"alpine:3.16.2", "redis:7.0.5-alpine"}, path: multipleImageBundle},
+			fields:          fields{images: []string{"alpine:3.16.2", "busybox:1.35.0"}, path: path.Join(tempDir, "multiple.tar")},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
@@ -72,19 +75,19 @@ func TestDockerDownload(t *testing.T) {
 		},
 		{
 			name:            "Should fail - no target given",
-			fields:          fields{images: []string{"alpine:3.16.2", "redis:7.0.5-alpine"}},
+			fields:          fields{images: []string{"alpine:3.16.2", "busybox:1.35.0"}},
 			wantErr:         true,
 			wantHelpMessage: true,
 		},
 		{
 			name:            "Should fail - image not found",
-			fields:          fields{images: []string{"iyehuda/not:exists"}, path: "/tmp/a"},
+			fields:          fields{images: []string{"iyehuda/not:exists"}, path: path.Join(tempDir, "output.tar")},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should fail - target path not found",
-			fields:          fields{images: []string{"alpine:3.16.2"}, path: "/tmp/not/exists"},
+			fields:          fields{images: []string{"busybox:1.35.0"}, path: path.Join(tempDir, "not/exists.tar")},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
