@@ -32,6 +32,6 @@ type FakeCommandRunner struct {
 }
 
 // Run runs a command with a predefined error.
-func (r *FakeCommandRunner) Run(cmd *exec.Cmd) error {
+func (r *FakeCommandRunner) Run(_ *exec.Cmd) error {
 	return r.Err
 }
