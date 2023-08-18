@@ -127,31 +127,31 @@ func TestDockerUpload(t *testing.T) {
 	}{
 		{
 			name:            "Should succeed - single image bundle",
-			fields:          fields{path: singleImageBundle, destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: singleImageBundle, destination: "registry.gitlab.com/iyehuda/bring"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - multiple images",
-			fields:          fields{path: multipleImageBundle, destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: multipleImageBundle, destination: "registry.gitlab.com/iyehuda/bring"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - single image, target subpath",
-			fields:          fields{path: singleImageBundle, destination: "yehudac.jfrog.io/example/subpath"},
+			fields:          fields{path: singleImageBundle, destination: "registry.gitlab.com/iyehuda/bring/subpath"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should succeed - multiple images, target subpath",
-			fields:          fields{path: multipleImageBundle, destination: "yehudac.jfrog.io/example/subpath"},
+			fields:          fields{path: multipleImageBundle, destination: "registry.gitlab.com/iyehuda/bring/subpath"},
 			wantErr:         false,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should fail - no input file path given",
-			fields:          fields{destination: "yehudac.jfrog.io/example"},
+			fields:          fields{destination: "registry.gitlab.com/iyehuda/bring"},
 			wantErr:         true,
 			wantHelpMessage: true,
 		},
@@ -163,13 +163,13 @@ func TestDockerUpload(t *testing.T) {
 		},
 		{
 			name:            "Should fail - invalid input file",
-			fields:          fields{path: invalidImageBundle, destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: invalidImageBundle, destination: "registry.gitlab.com/iyehuda/bring"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
 		{
 			name:            "Should fail - input file not found",
-			fields:          fields{path: nonexistentImageBundle, destination: "yehudac.jfrog.io/example"},
+			fields:          fields{path: nonexistentImageBundle, destination: "registry.gitlab.com/iyehuda/bring"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
@@ -181,7 +181,7 @@ func TestDockerUpload(t *testing.T) {
 		},
 		{
 			name:            "Should fail - registry path not found",
-			fields:          fields{path: singleImageBundle, destination: "yehudac.jfrog.io/restricted"},
+			fields:          fields{path: singleImageBundle, destination: "registry.gitlab.com/iyehuda/not-exists"},
 			wantErr:         true,
 			wantHelpMessage: false,
 		},
